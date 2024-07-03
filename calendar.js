@@ -79,13 +79,22 @@ generateTable()
     td.setAttribute('colspan',adcol)
     td.setAttribute('rowspan',adrow)
     
-    var row = document.getElementById(string1);
-    console.log(row)
-    var col = document.getElementById(string1);
-    console.log(col)
-    for(i=row;i<=tillTime;i++){
-    row.removeAttribute('id')
-    }
-   
-    
+    // var row = document.getElementById(string1);
+    // console.log(row)
+    // var col = document.getElementById(string1);
+    // console.log(col)
+    // for(i=row;i<=tillTime;i++){
+    // row.removeAttribute('id')
+     for(let i = fromTime; i<parseInt(fromTime) + parseInt(adrow); i++){
+         for(let j = fromDate; j < parseInt(fromDate) + parseInt(adcol); j++){
+             const removeElement = 'row_' + i + ',column_' + j;
+             if(i == fromTime && j == fromDate){
+                 continue;
+             }
+             else{
+                 const element = document.getElementById(removeElement);
+                 element.parentNode.removeChild(element);
+             }
+         }
+     }    
 }
