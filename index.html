@@ -4,22 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="calendar.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     
 </head>
 <body>
-    <div>
+     <div class="form-container">
+        <h2>Add Calendar Event</h2>
         <form>
-            <p>Enter Date from:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enter Date till:</p>
-            <input type="text" id="fromDate">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="tillDate"><br>
-            <br><p>Enter Time from:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enter Time till:</p>
-            <input type="text" id="fromTime">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="tillTime">
-            <br><p id="eventDay">Enter Event Name:</p>
-            <input type="text"><br>
-            <br>
-            <input type="button" value="submit" onclick="taskCalendar()">
+            <div class="form-row">
+                <label>Date From:</label>
+                <input type="number" id="fromDate" min="1" max="31" placeholder="Day (1-31)">
+                <label>Date Till:</label>
+                <input type="number" id="tillDate" min="1" max="31" placeholder="Day (1-31)">
+            </div>
+            
+            <div class="form-row">
+                <label>Time From:</label>
+                <input type="number" id="fromTime" min="1" max="24" placeholder="Hour (1-24)">
+                <label>Time Till:</label>
+                <input type="number" id="tillTime" min="1" max="24" placeholder="Hour (1-24)">
+            </div>
+            
+            <div class="form-row">
+                <label>Event Name:</label>
+                <input type="text" id="eventName" placeholder="Enter event name">
+            </div>
+            
+            <div class="form-row">
+                <label>Event Color:</label>
+                <div id="colorPicker">
+                    <div class="color-option selected" style="background-color: #4CAF50" data-color="#4CAF50"></div>
+                    <div class="color-option" style="background-color: #2196F3" data-color="#2196F3"></div>
+                    <div class="color-option" style="background-color: #FF9800" data-color="#FF9800"></div>
+                    <div class="color-option" style="background-color: #F44336" data-color="#F44336"></div>
+                    <div class="color-option" style="background-color: #9C27B0" data-color="#9C27B0"></div>
+                    <div class="color-option" style="background-color: #607D8B" data-color="#607D8B"></div>
+                    <div class="color-option" style="background-color: #795548" data-color="#795548"></div>
+                    <div class="color-option" style="background-color: #E91E63" data-color="#E91E63"></div>
+                </div>
+            </div>
+            
+            <button type="button" class="submit-btn" onclick="taskCalendar()">Add Event</button>
         </form>
-    </div><br>
+    </div>
     <script src="calendar.js"></script>
 </body>
 </html>

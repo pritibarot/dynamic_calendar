@@ -1,100 +1,128 @@
+let selectedColor = '#4CAF50'; // Default color
+
 function generateTable() {
-    // creates a <table> element and a <tbody> element
     const tbl = document.createElement("table");
-    
     const tblBody = document.createElement("tbody");
-  for (var i = 0;i < 25;i++) {
-    // creates a table row
-    
-    const row = document.createElement("tr");
-    if(i==0){
-        
-        const cell = document.createElement("td");
-        const cellText = document.createTextNode(`Time/date`);
-        cell.appendChild(cellText);
-        row.appendChild(cell);
-        
-    }
-    else{
-        const cell = document.createElement("td");
-        const cellText = document.createTextNode(`Hrs ${i}`);
-        cell.appendChild(cellText);
-        row.appendChild(cell);
-    }
-    
 
-    for (let j = 1 ; j < 32; j++) {
-      // Create a <td> element and a text node, make the text
-      // node the contents of the <td>, and put the <td> at
-      // the end of the table row
-      if(i==0){
-        const cell = document.createElement("td");
-        const cellText = document.createTextNode(`July ${j}`);
-        cell.appendChild(cellText);
-        row.appendChild(cell);
-      }
-      else{
-        const cell = document.createElement("td");
-      const cellText = document.createTextNode(` `);
-      cell.id="row_"+i+ ",column_"+j
-      
+    for (var i = 0; i < 25; i++) {
+        const row = document.createElement("tr");
 
-      cell.appendChild(cellText);
-      row.appendChild(cell);
-      }
-      
+        if (i == 0) {
+            const cell = document.createElement("td");
+            const cellText = document.createTextNode("Time/Date");
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+        } else {
+            const cell = document.createElement("td");
+            const cellText = document.createTextNode(`${i}:00`);
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+        }
+
+        for (let j = 1; j < 32; j++) {
+            if (i == 0) {
+                const cell = document.createElement("td");
+                const cellText = document.createTextNode(`July ${j}`);
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+            } else {
+                const cell = document.createElement("td");
+                const cellText = document.createTextNode(" ");
+                cell.id = "row_" + i + ",column_" + j;
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+            }
+        }
+        tblBody.appendChild(row);
     }
 
-    // add the row to the end of the table body
-    tblBody.appendChild(row);
-  }
-
-  // put the <tbody> in the <table>
-  tbl.appendChild(tblBody);
-  // appends <table> into <body>
-  document.body.appendChild(tbl);
-  // border attribute of tbl to '2'
-  tbl.setAttribute("border","1");
-  tbl.setAttribute("id","myTable")
+    tbl.appendChild(tblBody);
+    document.body.appendChild(tbl);
+    tbl.setAttribute("border", "1");
+    tbl.setAttribute("id", "myTable");
 }
 
-generateTable()
+function taskCalendar() {
+    const fromDate = parseInt(document.getElementById("fromDate").value);
+    const tillDate = parseInt(document.getElementById("tillDate").value);
+    const fromTime = parseInt(document.getElementById("fromTime").value);
+    const tillTime = parseInt(document.getElementById("tillTime").value);
+    const eventName = document.getElementById("eventName").value;
 
- function taskCalendar(){
-    const fromDate=document.getElementById("fromDate").value
-    const tillDate=document.getElementById("tillDate").value
-    const fromTime=document.getElementById("fromTime").value
-    const tillTime=document.getElementById("tillTime").value
-    const event=document.getElementById("eventDay").value
+    // Validation
+    if (!fromDate || !tillDate || !fromTime || !tillTime || !eventName) {
+        alert("Please fill in all fields");
+        return;
+    }
 
-    const string1="row_"+fromTime+",column_"+fromDate
-    console.log(string1)
-    const td=document.getElementById(string1)
-    console.log(td)
+    if (fromDate > tillDate || fromTime > tillTime) {
+        alert("'From' values should be less than or equal to 'Till' values");
+        return;
+    }
 
-    const adcol=""+tillDate-fromDate+1
-    console.log(adcol)
-    const adrow=""+tillTime-fromTime+1
-    console.log(adrow)
-    td.setAttribute('colspan',adcol)
-    td.setAttribute('rowspan',adrow)
-    
-    // var row = document.getElementById(string1);
-    // console.log(row)
-    // var col = document.getElementById(string1);
-    // console.log(col)
-    // for(i=row;i<=tillTime;i++){
-    // row.removeAttribute('id')
-     for(let i = fromTime; i<parseInt(fromTime) + parseInt(adrow); i++){
-         for(let j = fromDate; j < parseInt(fromDate) + parseInt(adcol); j++){
-             const removeElement = 'row_' + i + ',column_' + j;
-             if(i == fromTime && j == fromDate){
-                 continue;
-             }
-             else{
-                 const element = document.getElementById(removeElement);
-                 element.parentNode.removeChild(element);
-             }
-         }
-     }    
+    if (fromDate < 1 || tillDate > 31 || fromTime < 1 || tillTime > 24) {
+        alert("Please enter valid date (1-31) and time (1-24) values");
+        return;
+    }
+
+    const string1 = "row_" + fromTime + ",column_" + fromDate;
+    const td = document.getElementById(string1);
+
+    if (!td) {
+        alert("Invalid cell selection");
+        return;
+    }
+
+    const adcol = tillDate - fromDate + 1;
+    const adrow = tillTime - fromTime + 1;
+
+    // Set the event name and styling
+    td.innerHTML = eventName;
+    td.style.backgroundColor = selectedColor;
+    td.classList.add('event-cell');
+    td.setAttribute('colspan', adcol);
+    td.setAttribute('rowspan', adrow);
+
+    // Remove overlapping cells
+    for (let i = fromTime; i < fromTime + adrow; i++) {
+        for (let j = fromDate; j < fromDate + adcol; j++) {
+            const removeElement = 'row_' + i + ',column_' + j;
+            if (i == fromTime && j == fromDate) {
+                continue;
+            } else {
+                const element = document.getElementById(removeElement);
+                if (element) {
+                    element.parentNode.removeChild(element);
+                }
+            }
+        }
+    }
+
+    // Clear form
+    document.getElementById("fromDate").value = "";
+    document.getElementById("tillDate").value = "";
+    document.getElementById("fromTime").value = "";
+    document.getElementById("tillTime").value = "";
+    document.getElementById("eventName").value = "";
 }
+
+// Color picker functionality
+document.addEventListener('DOMContentLoaded', function () {
+    const colorOptions = document.querySelectorAll('.color-option');
+
+    colorOptions.forEach(option => {
+        option.addEventListener('click', function () {
+            // Remove selected class from all options
+            colorOptions.forEach(opt => opt.classList.remove('selected'));
+
+            // Add selected class to clicked option
+            this.classList.add('selected');
+
+            // Update selected color
+            selectedColor = this.getAttribute('data-color');
+        });
+    });
+});
+
+// Generate the table when page loads
+generateTable();
